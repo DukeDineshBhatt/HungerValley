@@ -14,13 +14,13 @@ public class MainSliderAdapter extends SliderAdapter {
     public void onBindImageSlide(int position, ImageSlideViewHolder viewHolder) {
         switch (position) {
             case 0:
-                viewHolder.bindImageSlide("https://assets.materialup.com/uploads/dcc07ea4-845a-463b-b5f0-4696574da5ed/preview.jpg");
+                viewHolder.bindImageSlide("https://firebasestorage.googleapis.com/v0/b/food-valley-6b326.appspot.com/o/Main%20Banner%2Frawat1.jpg?alt=media&token=2bf885ba-0c0e-475a-b35e-09a30e1fde7e");
                 break;
             case 1:
-                viewHolder.bindImageSlide("https://assets.materialup.com/uploads/20ded50d-cc85-4e72-9ce3-452671cf7a6d/preview.jpg");
+                viewHolder.bindImageSlide("https://firebasestorage.googleapis.com/v0/b/food-valley-6b326.appspot.com/o/Main%20Banner%2FMeghna1.jpg?alt=media&token=f093b8df-8b7d-42a7-a0ce-6e1cbe478b62");
                 break;
             case 2:
-                viewHolder.bindImageSlide("https://assets.materialup.com/uploads/76d63bbc-54a1-450a-a462-d90056be881b/preview.png");
+                viewHolder.bindImageSlide("https://firebasestorage.googleapis.com/v0/b/food-valley-6b326.appspot.com/o/Main%20Banner%2FCake1.jpg?alt=media&token=8fbae640-5de1-4e82-a909-8c501bc40d03");
                 break;
         }
     }

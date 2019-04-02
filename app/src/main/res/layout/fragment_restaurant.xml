@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".RestaurantFragment"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    tools:context=".RestaurantFragment">
 
     <ss.com.bannerslider.Slider
         android:id="@+id/banner_slider1"
@@ -13,10 +13,27 @@
         android:layout_height="250dp"
         app:slider_animateIndicators="true"
         app:slider_indicatorSize="10dp"
-        app:slider_interval="2000"
+        app:slider_interval="3000"
         app:slider_loopSlides="true"
         app:slider_selectedSlideIndicator="@drawable/indicator_circle_selected"
-        app:slider_unselectedSlideIndicator="@drawable/indicator_circle_unselected"
-        />
+        app:slider_unselectedSlideIndicator="@drawable/indicator_circle_unselected" />
 
-</LinearLayout>
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/upload_list"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="2dp"
+        android:layout_marginBottom="20dp"
+       >
+
+    </android.support.v7.widget.RecyclerView>
+
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:visibility="gone" />
+
+</RelativeLayout>

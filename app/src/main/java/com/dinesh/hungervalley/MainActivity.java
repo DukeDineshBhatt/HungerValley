@@ -10,7 +10,7 @@ import android.view.MenuItem;
 import android.widget.Toolbar;
 
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener {
 
     private Toolbar toolbar;
 
@@ -20,62 +20,50 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar.setTitle("Hunger Valley");
 
-        BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.bottom_navigation);
-        navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
-
-        if (savedInstanceState == null) {
-            navigation.setSelectedItemId(R.id.restaurant); // change to whichever id should be default
-        }
         loadFragment(new RestaurantFragment());
 
+        BottomNavigationView navigation = findViewById(R.id.bottom_navigation);
+        navigation.setOnNavigationItemSelectedListener(this);
+
     }
 
-    private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
-            = new BottomNavigationView.OnNavigationItemSelectedListener() {
 
-        @Override
-        public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-            Fragment fragment;
-            switch (item.getItemId()) {
-                case R.id.restaurant:
-                    toolbar.setTitle("Hunger Valley");
-                    fragment = new RestaurantFragment();
-                    loadFragment(fragment);
-                    return true;
-                case R.id.cart:
-                    toolbar.setTitle("Cart");
-                    fragment = new CartFragment();
-                    loadFragment(fragment);
-                    return true;
-                case R.id.account:
-                    toolbar.setTitle("Account");
-                    fragment = new AccountFragment();
-                    loadFragment(fragment);
-                    return true;
-
-            }
-
-            return false;
+    private boolean loadFragment(Fragment fragment) {
+        //switching fragment
+        if (fragment != null) {
+            getSupportFragmentManager()
+                    .beginTransaction()
+                    .replace(R.id.fragment_frame, fragment)
+                    .commit();
+            return true;
         }
-    };
-
-    private void loadFragment(Fragment fragment) {
-        // load fragment
-        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        transaction.replace(R.id.fragment_frame, fragment);
-        transaction.addToBackStack(null);
-        transaction.commit();
+        return false;
     }
+
 
     @Override
-    public void onBackPressed() {
-        if (!getFragmentManager().equals(R.id.restaurant)) {
-            getFragmentManager().popBackStack();
-        } else {
-            super.onBackPressed();
-        }
-    }
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+        Fragment fragment = null;
 
+        switch (item.getItemId()) {
+            case R.id.restaurant:
+                fragment = new RestaurantFragment();
+                toolbar.setTitle("Hunger Valley");
+                break;
+            case R.id.cart:
+                fragment = new CartFragment();
+                toolbar.setTitle("Cart");
+                break;
+
+            case R.id.account:
+                fragment = new AccountFragment();
+                toolbar.setTitle("Account");
+                break;
+
+        }
+        return loadFragment(fragment);
+    }
 }
 

@@ -7,31 +7,46 @@
     android:orientation="vertical"
     tools:context=".RestaurantFragment">
 
-    <ss.com.bannerslider.Slider
-        android:id="@+id/banner_slider1"
-        android:layout_width="match_parent"
-        android:layout_height="220dp"
-        app:slider_animateIndicators="true"
-        app:slider_indicatorSize="10dp"
-        app:slider_interval="3000"
-        app:slider_loopSlides="true"
-        app:slider_selectedSlideIndicator="@drawable/indicator_circle_selected"
-        app:slider_unselectedSlideIndicator="@drawable/indicator_circle_unselected" />
-
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/upload_list"
+    <android.support.v4.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="2dp"
-        android:layout_marginBottom="30dp"
-       >
-    </android.support.v7.widget.RecyclerView>
+        android:layout_gravity="fill_vertical"
+        android:fillViewport="true"
+        android:overScrollMode="never"
+     >
 
-    <ProgressBar
-        android:id="@+id/progressBar"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:visibility="gone" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
 
+            <ss.com.bannerslider.Slider
+                android:id="@+id/banner_slider1"
+                android:layout_width="match_parent"
+                android:layout_height="220dp"
+                app:slider_animateIndicators="true"
+                app:slider_indicatorSize="10dp"
+                app:slider_interval="3000"
+                app:slider_loopSlides="true"
+                app:slider_selectedSlideIndicator="@drawable/indicator_circle_selected"
+                app:slider_unselectedSlideIndicator="@drawable/indicator_circle_unselected" />
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/upload_list"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="2dp"
+                android:layout_marginBottom="30dp">
+
+            </android.support.v7.widget.RecyclerView>
+
+            <ProgressBar
+                android:id="@+id/progressBar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:visibility="gone" />
+
+        </LinearLayout>
+    </android.support.v4.widget.NestedScrollView>
 </LinearLayout>

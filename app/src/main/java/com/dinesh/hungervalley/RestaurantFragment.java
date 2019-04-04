@@ -1,5 +1,6 @@
 package com.dinesh.hungervalley;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -90,8 +91,6 @@ public class RestaurantFragment extends Fragment {
 
                 final String list_user_id = getRef(position).getKey();
 
-
-
                 mRestaurantDatabase.child(list_user_id).addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
@@ -110,10 +109,10 @@ public class RestaurantFragment extends Fragment {
                             @Override
                             public void onClick(View view) {
 
-                          /*      Intent chatIntent = new Intent(getContext(), SingleEventActivity.class);
-                                final String s = ((Event) ctx.getApplicationContext()).setSomeVariable(list_user_id);
-                                chatIntent.putExtra("event_id", list_user_id);
-                                startActivity(chatIntent);*/
+                                Intent chatIntent = new Intent(getContext(),SingleRestaurant.class);
+                                final String s = ((Application) getActivity().getApplicationContext()).setSomeVariable(list_user_id);
+                                chatIntent.putExtra("restauranr_id", list_user_id);
+                                startActivity(chatIntent);
 
 
                             }

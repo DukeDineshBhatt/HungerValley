@@ -1,6 +1,11 @@
 package com.dinesh.hungervalley;
 
+import android.app.AlertDialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -32,7 +37,6 @@ public class RestaurantFragment extends Fragment {
     private DatabaseReference mRestaurantDatabase;
 
 
-
     public RestaurantFragment() {
         // Required empty public constructor
     }
@@ -45,7 +49,6 @@ public class RestaurantFragment extends Fragment {
         Slider.init(new PicassoImageLoadingService(getContext()));
 
         slider = view.findViewById(R.id.banner_slider1);
-
 
 
         recyclerView = (RecyclerView) view.findViewById(R.id.upload_list);
@@ -69,7 +72,7 @@ public class RestaurantFragment extends Fragment {
             }
         }, 1500);
 
-        Log.d("DINESH","DINESH");
+        Log.d("DINESH", "DINESH");
 
 
         linearLayoutManager = new LinearLayoutManager(getContext());
@@ -78,61 +81,67 @@ public class RestaurantFragment extends Fragment {
 
         progressBar.setVisibility(View.VISIBLE);
 
-        FirebaseRecyclerAdapter<MyDataSetGet, FriendsViewHolder> friendsRecyclerView = new FirebaseRecyclerAdapter<MyDataSetGet, FriendsViewHolder>(
-
-                MyDataSetGet.class,
-                R.layout.list_item_single,
-                FriendsViewHolder.class,
-                mRestaurantDatabase
-
-        ) {
-            @Override
-            protected void populateViewHolder(final FriendsViewHolder viewHolder, MyDataSetGet model, int position) {
-
-                final String list_user_id = getRef(position).getKey();
-
-                mRestaurantDatabase.child(list_user_id).addValueEventListener(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(DataSnapshot dataSnapshot) {
+        if (isNetworkConnectionAvailable()==true){
 
 
-                        final String name = dataSnapshot.child("Restaurant_name").getValue().toString();
-                        final String type = dataSnapshot.child("Restaurant_type").getValue().toString();
-                        final String image = dataSnapshot.child("Banner").getValue().toString();
 
-                        viewHolder.setName(name);
-                        viewHolder.setFrom(type);
-                        viewHolder.setImage(image);
+            FirebaseRecyclerAdapter<MyDataSetGet, FriendsViewHolder> friendsRecyclerView = new FirebaseRecyclerAdapter<MyDataSetGet, FriendsViewHolder>(
+
+                    MyDataSetGet.class,
+                    R.layout.list_item_single,
+                    FriendsViewHolder.class,
+                    mRestaurantDatabase
+
+            ) {
+                @Override
+                protected void populateViewHolder(final FriendsViewHolder viewHolder, MyDataSetGet model, int position) {
+
+                    final String list_user_id = getRef(position).getKey();
+
+                    mRestaurantDatabase.child(list_user_id).addValueEventListener(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot) {
 
 
-                        viewHolder.mView.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View view) {
+                            final String name = dataSnapshot.child("Restaurant_name").getValue().toString();
+                            final String type = dataSnapshot.child("Restaurant_type").getValue().toString();
+                            final String image = dataSnapshot.child("Banner").getValue().toString();
 
-                                Intent chatIntent = new Intent(getContext(),SingleRestaurant.class);
-                                final String s = ((Application) getActivity().getApplicationContext()).setSomeVariable(list_user_id);
-                                chatIntent.putExtra("restauranr_id", list_user_id);
-                                startActivity(chatIntent);
+                            viewHolder.setName(name);
+                            viewHolder.setFrom(type);
+                            viewHolder.setImage(image);
+
+                            viewHolder.mView.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View view) {
+
+                                    Intent chatIntent = new Intent(getContext(), SingleRestaurant.class);
+                                    final String s = ((Application) getActivity().getApplicationContext()).setSomeVariable(list_user_id);
+                                    chatIntent.putExtra("restauranr_id", list_user_id);
+                                    startActivity(chatIntent);
 
 
-                            }
-                        });
+                                }
+                            });
 
-                        progressBar.setVisibility(View.GONE);
+                            progressBar.setVisibility(View.GONE);
 
-                    }
+                        }
 
-                    @Override
-                    public void onCancelled(DatabaseError databaseError) {
+                        @Override
+                        public void onCancelled(DatabaseError databaseError) {
 
-                        progressBar.setVisibility(View.GONE);
-                    }
-                });
+                            progressBar.setVisibility(View.GONE);
+                        }
+                    });
 
-            }
-        };
+                }
+            };
 
-        recyclerView.setAdapter(friendsRecyclerView);
+            recyclerView.setAdapter(friendsRecyclerView);
+
+
+        }
 
 
 
@@ -140,6 +149,36 @@ public class RestaurantFragment extends Fragment {
 
     }
 
+    public boolean isNetworkConnectionAvailable() {
+        ConnectivityManager cm =
+                (ConnectivityManager) getContext().getSystemService(Context.CONNECTIVITY_SERVICE);
+
+        NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
+        boolean isConnected = activeNetwork != null &&
+                activeNetwork.isConnected();
+        if (isConnected) {
+            Log.d("Network", "Connected");
+            return true;
+        } else {
+            checkNetworkConnection();
+            Log.d("Network", "Not Connected");
+            return false;
+        }
+    }
+
+    public void checkNetworkConnection() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+        builder.setTitle("No internet Connection");
+        builder.setMessage("Please turn on internet connection to continue");
+        builder.setNegativeButton("close", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+        AlertDialog alertDialog = builder.create();
+        alertDialog.show();
+    }
 
 
     public static class FriendsViewHolder extends RecyclerView.ViewHolder {
@@ -169,7 +208,6 @@ public class RestaurantFragment extends Fragment {
         }
 
 
-
         public void setImage(String image) {
 
 
@@ -185,8 +223,6 @@ public class RestaurantFragment extends Fragment {
         }
 
     }
-
-
 
 
 }

@@ -11,6 +11,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -36,6 +37,9 @@ public class SingleRestaurant extends AppCompatActivity {
     private RecyclerView recyclerView;
     private LinearLayoutManager linearLayoutManager;
     ProgressBar progressBar;
+    LinearLayout cartLayout;
+    TextView item_count, price;
+    String food_price, newPrice;
 
 
     @Override
@@ -50,6 +54,9 @@ public class SingleRestaurant extends AppCompatActivity {
         txt_res_add = (TextView) findViewById(R.id.restaurant_add);
         recyclerView = (RecyclerView) findViewById(R.id.my_recycler_view);
         progressBar = (ProgressBar) findViewById(R.id.progress_bar);
+        cartLayout = (LinearLayout) findViewById(R.id.cart_layout);
+        item_count = (TextView) findViewById(R.id.item_count);
+        price = (TextView) findViewById(R.id.price);
 
         setSupportActionBar(toolbar);
         restauratId = ((Application) this.getApplicationContext()).getSomeVariable();
@@ -80,7 +87,6 @@ public class SingleRestaurant extends AppCompatActivity {
                 }
             }
         });
-
 
 
         mRestaurantDatabase = FirebaseDatabase.getInstance().getReference().child("Restaurants").child(restauratId);
@@ -127,7 +133,7 @@ public class SingleRestaurant extends AppCompatActivity {
 
         ) {
             @Override
-            protected void populateViewHolder(final SingleRestaurant.FriendsViewHolder viewHolder, MenuModel model, int position) {
+            protected void populateViewHolder(final SingleRestaurant.FriendsViewHolder viewHolder, final MenuModel model, final int position) {
 
                 final String list_menu_id = getRef(position).getKey();
 
@@ -138,34 +144,47 @@ public class SingleRestaurant extends AppCompatActivity {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
 
-                        Log.d("DINESH", "DDDDDDDD");
-                        final String restaurant_type = dataSnapshot.child("Price").getValue().toString();
-
+                        food_price =    dataSnapshot.child("Price").getValue().toString();
 
                         viewHolder.setName(list_menu_id);
-                        viewHolder.setPrice(restaurant_type);
+                        viewHolder.setPrice(food_price);
+
+
 
                         btn_add.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View view) {
 
-                                //Toast.makeText(SingleRestaurant.this, "hello", Toast.LENGTH_SHORT).show();
-
                                 button.setVisibility(View.VISIBLE);
                                 button.setNumber("1");
                                 btn_add.setVisibility(View.GONE);
 
+                                cartLayout.setVisibility(View.VISIBLE);
+                                item_count.setText("1Item");
+
+                                //Log.d("DINESH",);
+                                //price.setText(food_price);
+
                             }
                         });
+
 
                         button.setOnValueChangeListener(new ElegantNumberButton.OnValueChangeListener() {
                             @Override
                             public void onValueChange(ElegantNumberButton view, int oldValue, int newValue) {
 
-                                if (newValue ==0){
+                                if (newValue == 0) {
 
                                     btn_add.setVisibility(View.VISIBLE);
                                     button.setVisibility(View.GONE);
+                                    cartLayout.setVisibility(View.GONE);
+                                    price.setText(" ");
+
+                                } else {
+
+                                    int i = Integer.parseInt(food_price) * Integer.parseInt(button.getNumber());
+                                    price.setText(String.valueOf(i));
+
                                 }
                             }
                         });

@@ -4,13 +4,41 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".SplashActivity"
-    android:background="#AB192D">
+    tools:context=".SplashActivity">
 
-    <ImageView
-        android:layout_width="420dp"
-        android:layout_height="320dp"
-        android:src="@drawable/logo"
-        android:layout_centerInParent="true"/>
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
+        <ImageView
+            android:id="@+id/image"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:foreground="@drawable/image_overlay"
+            android:scaleType="centerCrop"
+            android:foregroundTint="#333333"
+            android:src="@drawable/background_image"/>
+
+        <LinearLayout
+            android:id="@+id/one"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginBottom="100dp"
+                android:gravity="center"
+                android:text="Hunger Valley"
+                android:textColor="@android:color/white"
+                android:textSize="45sp"
+                android:textStyle="bold" />
+
+
+        </LinearLayout>
+    </FrameLayout>
 </RelativeLayout>

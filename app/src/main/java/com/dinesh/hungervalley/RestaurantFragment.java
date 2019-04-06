@@ -78,7 +78,7 @@ public class RestaurantFragment extends Fragment {
         linearLayoutManager = new LinearLayoutManager(getContext());
         recyclerView.setLayoutManager(linearLayoutManager);
         recyclerView.setHasFixedSize(true);
-
+        recyclerView.setNestedScrollingEnabled(false);
         progressBar.setVisibility(View.VISIBLE);
 
         if (isNetworkConnectionAvailable()==true){

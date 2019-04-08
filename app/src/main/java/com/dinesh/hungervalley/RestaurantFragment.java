@@ -224,5 +224,10 @@ public class RestaurantFragment extends Fragment {
 
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
 
+
+    }
 }

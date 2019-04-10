@@ -1,18 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".CartFragment"
-   >
+    tools:context=".CartFragment">
 
     <LinearLayout
+        android:id="@+id/layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
         android:gravity="center"
         android:orientation="vertical"
-        android:paddingBottom="75dp">
+        android:paddingBottom="75dp"
+        android:visibility="gone">
 
         <ImageView
             android:id="@+id/cart_image"
@@ -31,6 +33,14 @@
 
         <TextView
             android:id="@+id/text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Add some yumms to it from the menu"
+            android:textAppearance="@style/Base.TextAppearance.AppCompat.Title"
+            android:textSize="17sp" />
+
+        <TextView
+            android:id="@+id/cart"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Add some yumms to it from the menu"

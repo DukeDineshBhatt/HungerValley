@@ -1,5 +1,7 @@
 package com.dinesh.hungervalley;
 
+import android.content.SharedPreferences;
+import android.os.Parcelable;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -16,15 +18,17 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-
-import com.cepheuen.elegantnumberbutton.view.ElegantNumberButton;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.gson.Gson;
 import com.squareup.picasso.Picasso;
+
+import java.util.ArrayList;
+import java.util.HashMap;
 
 public class SingleRestaurant extends AppCompatActivity {
 
@@ -39,7 +43,11 @@ public class SingleRestaurant extends AppCompatActivity {
     ProgressBar progressBar;
     LinearLayout cartLayout;
     TextView item_count, price;
-    String food_price, newPrice;
+
+    ArrayList<Integer> m = new ArrayList<Integer>();
+    HashMap<String, String> testHashMap = new HashMap<String, String>();
+
+    public static final String MY_PREFS_NAME = "HungerValleyCart";
 
 
     @Override
@@ -62,10 +70,8 @@ public class SingleRestaurant extends AppCompatActivity {
         restauratId = ((Application) this.getApplicationContext()).getSomeVariable();
         getSupportActionBar().setTitle(restauratId);
 
-
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowTitleEnabled(true);
-
 
         final CollapsingToolbarLayout collapsingToolbarLayout = (CollapsingToolbarLayout) findViewById(R.id.toolbar_layout);
         AppBarLayout appBarLayout = (AppBarLayout) findViewById(R.id.app_bar);
@@ -115,12 +121,12 @@ public class SingleRestaurant extends AppCompatActivity {
             }
         });
 
-
         mMenuDatabase = FirebaseDatabase.getInstance().getReference().child("Restaurants").child(restauratId).child("Menu");
 
         linearLayoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(linearLayoutManager);
         recyclerView.setHasFixedSize(true);
+
 
         progressBar.setVisibility(View.VISIBLE);
 
@@ -133,64 +139,76 @@ public class SingleRestaurant extends AppCompatActivity {
 
         ) {
             @Override
-            protected void populateViewHolder(final SingleRestaurant.FriendsViewHolder viewHolder, final MenuModel model, final int position) {
+            protected void populateViewHolder(final SingleRestaurant.FriendsViewHolder viewHolder, final MenuModel model, int position) {
 
                 final String list_menu_id = getRef(position).getKey();
-
-                final ElegantNumberButton button = viewHolder.mView.findViewById(R.id.number_button);
-                final Button btn_add = (Button) viewHolder.mView.findViewById(R.id.btn_add);
 
                 mMenuDatabase.child(list_menu_id).addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
 
-                        food_price =    dataSnapshot.child("Price").getValue().toString();
+                        final String food_price = dataSnapshot.child("Price").getValue().toString();
 
                         viewHolder.setName(list_menu_id);
-                        viewHolder.setPrice(food_price);
+                        viewHolder.price.setText(food_price);
 
-
-
-                        btn_add.setOnClickListener(new View.OnClickListener() {
+                        viewHolder.buttonInc.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View view) {
 
-                                button.setVisibility(View.VISIBLE);
-                                button.setNumber("1");
-                                btn_add.setVisibility(View.GONE);
-
+                                int count = Integer.parseInt(String.valueOf(viewHolder.textCount.getText()));
+                                count++;
+                                viewHolder.textCount.setText(String.valueOf(count));
                                 cartLayout.setVisibility(View.VISIBLE);
-                                item_count.setText("1Item");
 
-                                //Log.d("DINESH",);
-                                //price.setText(food_price);
+                                m.add(Integer.valueOf(food_price));
+
+                                int i;
+                                double sum = 0;
+                                for (i = 0; i < m.size(); i++)
+                                    sum += m.get(i);
+                                price.setText(String.valueOf(sum));
+                                item_count.setText(String.valueOf(m.size() + "item"));
+
+                                testHashMap.put("food_name", list_menu_id);
+                                testHashMap.put("total_price", String.valueOf(sum));
+
+                                Gson gson = new Gson();
+                                String hashMapString = gson.toJson(testHashMap);
+
+                                SharedPreferences.Editor editor = getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE).edit();
+                                editor.putString("cart", hashMapString);
+                                editor.apply();
 
                             }
                         });
 
-
-                        button.setOnValueChangeListener(new ElegantNumberButton.OnValueChangeListener() {
+                        viewHolder.buttonDec.setOnClickListener(new View.OnClickListener() {
                             @Override
-                            public void onValueChange(ElegantNumberButton view, int oldValue, int newValue) {
+                            public void onClick(View view) {
 
-                                if (newValue == 0) {
+                                int count = Integer.parseInt(String.valueOf(viewHolder.textCount.getText()));
 
-                                    btn_add.setVisibility(View.VISIBLE);
-                                    button.setVisibility(View.GONE);
-                                    cartLayout.setVisibility(View.GONE);
-                                    price.setText(" ");
+                                if (count > 0) {
 
-                                } else {
+                                    count--;
 
-                                    int i = Integer.parseInt(food_price) * Integer.parseInt(button.getNumber());
-                                    price.setText(String.valueOf(i));
+                                    viewHolder.textCount.setText(String.valueOf(count));
 
+                                    m.remove(Integer.valueOf(food_price));
+
+                                    int i;
+                                    double sum = 0;
+                                    for (i = 0; i < m.size(); i++)
+                                        sum += m.get(i);
+                                    price.setText(String.valueOf(sum));
+                                    item_count.setText(String.valueOf(m.size() + "item"))
+                                    ;
                                 }
                             }
                         });
 
                         progressBar.setVisibility(View.GONE);
-
                     }
 
                     @Override
@@ -200,6 +218,8 @@ public class SingleRestaurant extends AppCompatActivity {
                 });
 
             }
+
+
         };
 
         recyclerView.setAdapter(friendsRecyclerView);
@@ -211,23 +231,24 @@ public class SingleRestaurant extends AppCompatActivity {
 
         View mView;
 
+        Button buttonInc, buttonDec;
+        TextView textCount, price;
+
         public FriendsViewHolder(View itemView) {
             super(itemView);
 
             mView = itemView;
 
+            buttonInc = (Button) itemView.findViewById(R.id.btn_add);
+            buttonDec = (Button) itemView.findViewById(R.id.btn_minus);
+            textCount = (TextView) itemView.findViewById(R.id.text);
+            price = (TextView) itemView.findViewById(R.id.price);
+
         }
 
         public void setName(String name) {
-            TextView userName = (TextView) mView.findViewById(R.id.name);
+            TextView userName = (TextView) itemView.findViewById(R.id.name);
             userName.setText(name);
-        }
-
-        public void setPrice(String from) {
-
-            TextView fromTxt = (TextView) mView.findViewById(R.id.price);
-            fromTxt.setText(from);
-
         }
 
 

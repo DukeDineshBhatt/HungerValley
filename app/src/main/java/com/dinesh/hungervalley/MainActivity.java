@@ -83,11 +83,11 @@ public class MainActivity extends AppCompatActivity {
                 FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
                 ft.replace(R.id.fragment_frame, fragmentone);
 
-                flags = getWindow().getDecorView().getSystemUiVisibility(); // get current flag
-                flags = flags ^ View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR; // use XOR here for remove LIGHT_STATUS_BAR from flags
-                getWindow().getDecorView().setSystemUiVisibility(flags);
+                //flags = getWindow().getDecorView().getSystemUiVisibility(); // get current flag
+                //flags = flags ^ View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR; // use XOR here for remove LIGHT_STATUS_BAR from flags
+                //getWindow().getDecorView().setSystemUiVisibility(flags);
                 getWindow().setStatusBarColor(ContextCompat
-                        .getColor(this,R.color.colorPrimaryDark));
+                        .getColor(this, R.color.colorPrimaryDark));
 
                 toolbar.setVisibility(View.VISIBLE);
                 ft.commit();
@@ -134,10 +134,10 @@ public class MainActivity extends AppCompatActivity {
             RestaurantFragment fragmentone = new RestaurantFragment();
             FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
             ft.replace(R.id.fragment_frame, fragmentone);
+
             ft.commit();
         }
     }
-
 
 
     @Override

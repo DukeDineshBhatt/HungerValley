@@ -4,6 +4,7 @@ import android.content.SharedPreferences;
 import android.os.Parcelable;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -45,7 +46,8 @@ public class SingleRestaurant extends AppCompatActivity {
     TextView item_count, price;
 
     ArrayList<Integer> m = new ArrayList<Integer>();
-    HashMap<String, String> testHashMap = new HashMap<String, String>();
+
+    DatabaseHelper databaseHelper;
 
     public static final String MY_PREFS_NAME = "HungerValleyCart";
 
@@ -148,9 +150,11 @@ public class SingleRestaurant extends AppCompatActivity {
                     public void onDataChange(DataSnapshot dataSnapshot) {
 
                         final String food_price = dataSnapshot.child("Price").getValue().toString();
+                        final String food_type = dataSnapshot.child("Type").getValue().toString();
 
                         viewHolder.setName(list_menu_id);
                         viewHolder.price.setText(food_price);
+                        viewHolder.setImage(food_type);
 
                         viewHolder.buttonInc.setOnClickListener(new View.OnClickListener() {
                             @Override
@@ -170,7 +174,7 @@ public class SingleRestaurant extends AppCompatActivity {
                                 price.setText(String.valueOf(sum));
                                 item_count.setText(String.valueOf(m.size() + "item"));
 
-                                testHashMap.put("food_name", list_menu_id);
+                              /*  testHashMap.put("food_name", list_menu_id);
                                 testHashMap.put("total_price", String.valueOf(sum));
 
                                 Gson gson = new Gson();
@@ -178,7 +182,9 @@ public class SingleRestaurant extends AppCompatActivity {
 
                                 SharedPreferences.Editor editor = getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE).edit();
                                 editor.putString("cart", hashMapString);
-                                editor.apply();
+                                editor.apply();*/
+
+
 
                             }
                         });
@@ -233,6 +239,7 @@ public class SingleRestaurant extends AppCompatActivity {
 
         Button buttonInc, buttonDec;
         TextView textCount, price;
+        ImageView type_image;
 
         public FriendsViewHolder(View itemView) {
             super(itemView);
@@ -243,6 +250,7 @@ public class SingleRestaurant extends AppCompatActivity {
             buttonDec = (Button) itemView.findViewById(R.id.btn_minus);
             textCount = (TextView) itemView.findViewById(R.id.text);
             price = (TextView) itemView.findViewById(R.id.price);
+            type_image = (ImageView)itemView.findViewById(R.id.type_image);
 
         }
 
@@ -251,6 +259,29 @@ public class SingleRestaurant extends AppCompatActivity {
             userName.setText(name);
         }
 
+
+
+        public void setImage(String image) {
+            ImageView imageView = (ImageView) mView.findViewById(R.id.type_image);
+
+            if (!image.equals("Non-Veg")) {
+
+                Picasso
+                        .with(mView.getContext())
+                        .load(R.drawable.veg)
+                        .into(imageView);
+
+            }
+            else{
+
+                Picasso
+                        .with(mView.getContext())
+                        .load(R.drawable.non_veg)
+                        .into(imageView);
+
+            }
+
+        }
 
     }
 }

@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".LoginAcivity">
+    tools:context=".MainActivity">
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar"
@@ -15,77 +15,141 @@
         app:popupTheme="@style/AppTheme.PopupOverlay"
         app:theme="@style/ToolbarTheme" />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="20dp"
-        android:layout_marginTop="15dp"
-        android:layout_marginRight="20dp"
-        android:layout_marginBottom="15dp"
-        android:text="Sign up"
-        android:textSize="28dp"
-        android:textStyle="bold" />
-
-    <android.support.design.widget.TextInputLayout
-        android:id="@+id/usernameWrapper"
+    <LinearLayout
+        android:id="@+id/container"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp">
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:padding="20dp">
 
-        <EditText
-            android:id="@+id/username"
+        <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Username"
-            android:inputType="textEmailAddress" />
+            android:layout_marginBottom="25dp"
+            android:text="Sign up"
+            android:textSize="28sp"
+            android:textStyle="bold" />
 
-    </android.support.design.widget.TextInputLayout>
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
 
+            <EditText
+                android:id="@+id/username"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="25dp"
+                android:hint="Username"
+                android:inputType="textPersonName"
+                android:paddingStart="5dp"
+                android:paddingTop="8dp"
+                android:paddingEnd="8dp"
+                android:textSize="18sp">
 
-    <android.support.design.widget.TextInputLayout
-        android:id="@+id/phoneWrapper"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/usernameWrapper"
-        android:layout_marginLeft="20dp"
-        android:layout_marginTop="6dp"
-        android:layout_marginRight="20dp">
+            </EditText>
 
-        <EditText
-            android:id="@+id/phone"
+        </android.support.design.widget.TextInputLayout>
+
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Mobile Number"
-            android:inputType="phone" />
+            android:layout_marginTop="25dp">
 
-    </android.support.design.widget.TextInputLayout>
+            <TextView
+                android:id="@+id/prefix"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:paddingStart="8dp"
+                android:text="+91"
+                android:textSize="18sp" />
+
+            <EditText
+                android:id="@+id/mobile"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:hint="enter your mobile number"
+                android:inputType="phone"
+                android:maxLength="10"
+                android:paddingStart="5dp"
+                android:paddingTop="8dp"
+                android:paddingEnd="8dp"
+                android:paddingBottom="8dp"
+                android:textSize="18sp">
+
+            </EditText>
 
 
-    <android.support.design.widget.TextInputLayout
-        android:id="@+id/passwordWrapper"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/usernameWrapper"
-        android:layout_marginLeft="20dp"
-        android:layout_marginTop="6dp"
-        android:layout_marginRight="20dp">
+        </LinearLayout>
 
-        <EditText
-            android:id="@+id/password"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Password"
-            android:inputType="textPassword" />
+            android:layout_marginTop="25dp">
 
-    </android.support.design.widget.TextInputLayout>
 
-    <Button
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="20dp"
-        android:layout_marginTop="30dp"
-        android:layout_marginRight="20dp"
-        android:text="Sign up" />
+            <TextView
+                android:id="@+id/prefix1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:paddingStart="8dp"
+                android:text="+91"
+                android:textSize="18sp" />
+
+
+            <EditText
+                android:id="@+id/mobile_confirm"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:hint="confirm your mobile number"
+                android:inputType="phone"
+                android:maxLength="10"
+                android:paddingStart="5dp"
+                android:paddingTop="8dp"
+                android:paddingEnd="8dp"
+                android:paddingBottom="8dp"
+                android:textSize="18sp">
+
+            </EditText>
+
+        </LinearLayout>
+
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <EditText
+                android:id="@+id/password"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="25dp"
+                android:hint="Password"
+                android:inputType="textPassword"
+                android:paddingStart="18dp"
+                android:paddingTop="8dp"
+                android:paddingEnd="8dp"
+                android:textSize="18sp">
+
+            </EditText>
+
+        </android.support.design.widget.TextInputLayout>
+
+        <Button
+            android:id="@+id/buttonContinue"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/mobile_confirm"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="25dp"
+            android:background="@color/colorPrimaryDark"
+            android:text="Continue"
+            android:textAllCaps="false"
+            android:textColor="#cdd8f1" />
+
+    </LinearLayout>
 
 </LinearLayout>
+

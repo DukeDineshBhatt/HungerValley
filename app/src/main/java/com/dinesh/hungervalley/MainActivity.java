@@ -22,6 +22,8 @@ import android.view.WindowManager;
 import android.widget.Toast;
 import android.widget.Toolbar;
 
+import com.google.firebase.FirebaseApp;
+
 
 public class MainActivity extends AppCompatActivity {
 
@@ -49,7 +51,7 @@ public class MainActivity extends AppCompatActivity {
         toolbar.setTitle("Hunger Valley");
 
         window = getWindow();
-
+        FirebaseApp.initializeApp(this);
 
         navigation = (BottomNavigationView) findViewById(R.id.bottom_navigation);
         navigation.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {

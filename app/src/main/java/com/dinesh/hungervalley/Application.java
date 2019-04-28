@@ -3,6 +3,7 @@ package com.dinesh.hungervalley;
 public class Application extends android.app.Application {
     private String someVariable;
     private String cartVariable;
+    private String userId;
 
     @Override
     public void onCreate() {
@@ -30,4 +31,12 @@ public class Application extends android.app.Application {
         return someVariable;
     }
 
+    public String getUserId() {
+        return userId;
+    }
+
+    public String setUserId(String userId) {
+        this.userId = userId;
+        return userId;
+    }
 }

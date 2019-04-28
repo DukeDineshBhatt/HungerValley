@@ -8,8 +8,11 @@ import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.google.firebase.database.DataSnapshot;
@@ -21,21 +24,19 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.HashMap;
 import java.util.Map;
 
-public class SignupActivity extends AppCompatActivity {
+public class LoginActivity extends AppCompatActivity {
 
     private Toolbar toolbar;
     int flags;
-
-    EditText editTextMobile;
-    EditText editTextMobileConfrim, editTextUsername, editTextPassword;
-
-    String mobile, mobile_confrm, password, username;
-
+    EditText editTextMobile, editTextPassword;
+    Button button_login;
+    String mobile, passwordEntered;
+    ProgressBar progressbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_signup);
+        setContentView(R.layout.activity_login);
 
         flags = getWindow().getDecorView().getSystemUiVisibility(); // get current flag
         flags |= View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR;   // add LIGHT_STATUS_BAR to flag
@@ -50,84 +51,64 @@ public class SignupActivity extends AppCompatActivity {
 
         toolbar.setTitle("");
 
-        editTextMobile = findViewById(R.id.mobile);
-        editTextMobileConfrim = findViewById(R.id.mobile_confirm);
-        editTextUsername = findViewById(R.id.username);
-        editTextPassword = findViewById(R.id.password);
+
+        editTextPassword = (EditText) findViewById(R.id.password);
+        editTextMobile = (EditText) findViewById(R.id.mobile);
+        button_login = (Button) findViewById(R.id.button_login);
+        progressbar = (ProgressBar) findViewById(R.id.progressbar);
 
 
-        FirebaseDatabase database = FirebaseDatabase.getInstance();
-
-        final DatabaseReference usersRef = database.getReference("Users");
-
-
-        findViewById(R.id.buttonContinue).setOnClickListener(new View.OnClickListener() {
+        button_login.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
+            public void onClick(View view) {
 
+                progressbar.setVisibility(View.VISIBLE);
                 mobile = editTextMobile.getText().toString().trim();
-                mobile_confrm = editTextMobileConfrim.getText().toString().trim();
-                password = editTextPassword.getText().toString().trim();
-                username = editTextUsername.getText().toString().trim();
+                passwordEntered = editTextPassword.getText().toString().trim();
 
-                if (username.isEmpty()) {
+                FirebaseDatabase database = FirebaseDatabase.getInstance();
 
-                    editTextUsername.setError("Enter username");
-                    editTextUsername.requestFocus();
-                    return;
+                DatabaseReference usersRef = database.getReference("Users");
 
-                } else if (mobile.isEmpty() || mobile.length() < 10) {
+                if (mobile.isEmpty() || mobile.length() < 10) {
 
-                    editTextMobile.setError("Enter a valid mobile");
+                    editTextMobile.setError("Enter valid mobile number");
                     editTextMobile.requestFocus();
+                    progressbar.setVisibility(View.GONE);
                     return;
-                } else if (!(mobile.equals(mobile_confrm))) {
-
-                    editTextMobileConfrim.setError("Enter Correct mobile number");
-                    editTextMobileConfrim.requestFocus();
-                    return;
-                } else if (password.isEmpty() || password.length() < 6) {
+                } else if (passwordEntered.isEmpty() || passwordEntered.length() < 6) {
 
                     editTextPassword.setError("Enter your 6 digit password");
                     editTextPassword.requestFocus();
-
+                    progressbar.setVisibility(View.GONE);
+                    return;
                 } else {
 
-
-                    usersRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                    usersRef.addValueEventListener(new ValueEventListener() {
                         @Override
                         public void onDataChange(DataSnapshot snapshot) {
-                            if (snapshot.hasChild(mobile_confrm)) {
 
+                            String password = snapshot.child(mobile).child("password").getValue().toString();
 
-                                Toast.makeText(SignupActivity.this, "Account already exist with this mobile number!", Toast.LENGTH_SHORT).show();
+                            if (snapshot.hasChild(mobile) && password.equals(passwordEntered)) {
 
-                                editTextMobile.setError("Account Already exist!");
-                                editTextMobile.requestFocus();
-
-                            } else {
-
+                                progressbar.setVisibility(View.GONE);
+                                Toast.makeText(LoginActivity.this, "Log in success.", Toast.LENGTH_SHORT).show();
 
                                 SharedPreferences mPrefs = getSharedPreferences("myAppPrefs", Context.MODE_PRIVATE);
                                 SharedPreferences.Editor editor = mPrefs.edit();
+                                editor.putString("user_id",mobile);
                                 editor.putBoolean("is_logged_before", true); //this line will do trick
                                 editor.commit();
 
-
-                                String userid = editTextMobileConfrim.getText().toString().trim();
-
-                                Map userMap = new HashMap();
-                                userMap.put("username", username);
-                                userMap.put("mobile_number", mobile_confrm);
-                                userMap.put("password", password);
-
-                                usersRef.child(userid).setValue(userMap);
-
-                                Intent intent = new Intent(SignupActivity.this, LoginActivity.class);
+                                Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                                 //intent.putExtra("mobile", mobile);
                                 startActivity(intent);
                                 finish();
 
+                            } else {
+                                progressbar.setVisibility(View.GONE);
+                                Toast.makeText(LoginActivity.this, "Incorrect details.", Toast.LENGTH_SHORT).show();
 
                             }
                         }
@@ -135,13 +116,16 @@ public class SignupActivity extends AppCompatActivity {
                         @Override
                         public void onCancelled(@NonNull DatabaseError databaseError) {
 
+                            progressbar.setVisibility(View.GONE);
                         }
                     });
                 }
 
 
             }
-        });
-    }
 
+        });
+
+        progressbar.setVisibility(View.GONE);
+    }
 }

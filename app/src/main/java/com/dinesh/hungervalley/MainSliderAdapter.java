@@ -14,13 +14,13 @@ public class MainSliderAdapter extends SliderAdapter {
     public void onBindImageSlide(int position, ImageSlideViewHolder viewHolder) {
         switch (position) {
             case 0:
-                viewHolder.bindImageSlide("https://firebasestorage.googleapis.com/v0/b/food-valley-6b326.appspot.com/o/Main%20Banner%2Frawat1.jpg?alt=media&token=2bf885ba-0c0e-475a-b35e-09a30e1fde7e");
+                viewHolder.bindImageSlide("https://firebasestorage.googleapis.com/v0/b/hungervalley-89d92.appspot.com/o/Main%20Banner%2Fbackground-board-chillies-1435895.jpg?alt=media&token=d7eb0669-aa36-4b40-9e2e-e7c3903ab696");
                 break;
             case 1:
-                viewHolder.bindImageSlide("https://firebasestorage.googleapis.com/v0/b/food-valley-6b326.appspot.com/o/Main%20Banner%2FMeghna1.jpg?alt=media&token=f093b8df-8b7d-42a7-a0ce-6e1cbe478b62");
+                viewHolder.bindImageSlide("https://firebasestorage.googleapis.com/v0/b/hungervalley-89d92.appspot.com/o/Main%20Banner%2Fbackground-board-chilliesOOOO-1435895.jpg?alt=media&token=8a72671d-e09e-4617-b2ac-1432ea3680c2");
                 break;
             case 2:
-                viewHolder.bindImageSlide("https://firebasestorage.googleapis.com/v0/b/food-valley-6b326.appspot.com/o/Main%20Banner%2FCake1.jpg?alt=media&token=8fbae640-5de1-4e82-a909-8c501bc40d03");
+                viewHolder.bindImageSlide("https://firebasestorage.googleapis.com/v0/b/hungervalley-89d92.appspot.com/o/Main%20Banner%2Fcake-chocolate-chocolate-cake-132694.jpg?alt=media&token=6e6f7cd3-6e16-4c53-bf13-31bd5316862b");
                 break;
         }
     }

@@ -19,6 +19,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
+import com.google.firebase.FirebaseApp;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -53,6 +54,8 @@ public class RestaurantFragment extends Fragment {
 
         recyclerView = (RecyclerView) view.findViewById(R.id.upload_list);
         progressBar = (ProgressBar) view.findViewById(R.id.progressBar);
+
+        FirebaseApp.initializeApp(getActivity());
 
         mRestaurantDatabase = FirebaseDatabase.getInstance().getReference().child("Restaurants");
         mRestaurantDatabase.keepSynced(true);

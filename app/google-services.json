@@ -21,6 +21,10 @@
             "package_name": "com.dinesh.hungervalley",
             "certificate_hash": "55a90338e04c8ddb3fa17cef663061fb90f6ecfb"
           }
+        },
+        {
+          "client_id": "574029222128-ljkg8vr51q34elj41vmf4g4mutsuram6.apps.googleusercontent.com",
+          "client_type": 3
         }
       ],
       "api_key": [

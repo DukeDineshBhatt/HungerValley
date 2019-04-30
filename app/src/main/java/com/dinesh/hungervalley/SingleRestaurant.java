@@ -187,7 +187,7 @@ public class SingleRestaurant extends AppCompatActivity {
                                 viewHolder.add.setVisibility(View.GONE);
 
                                 int count = Integer.parseInt(String.valueOf(viewHolder.textCount.getText()));
-                                
+
                                 m.add(Integer.valueOf(food_price));
 
                                 int i;

@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
@@ -29,6 +30,8 @@ import com.squareup.picasso.Picasso;
 
 import ss.com.bannerslider.Slider;
 
+import static android.content.Context.MODE_PRIVATE;
+
 public class RestaurantFragment extends Fragment {
 
     private Slider slider;
@@ -36,6 +39,7 @@ public class RestaurantFragment extends Fragment {
     ProgressBar progressBar;
     private LinearLayoutManager linearLayoutManager;
     private DatabaseReference mRestaurantDatabase;
+    String uId;
 
 
     public RestaurantFragment() {
@@ -54,6 +58,8 @@ public class RestaurantFragment extends Fragment {
 
         recyclerView = (RecyclerView) view.findViewById(R.id.upload_list);
         progressBar = (ProgressBar) view.findViewById(R.id.progressBar);
+
+
 
         FirebaseApp.initializeApp(getActivity());
 
